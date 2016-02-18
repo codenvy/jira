@@ -20,7 +20,7 @@
     </parent>
     <groupId>com.codenvy.plugin</groupId>
     <artifactId>plugin-jira-parent</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy JIRA Plugin :: Parent</name>
     <organization>
@@ -33,16 +33,15 @@
     <properties>
         <amps.version>6.1.0</amps.version>
         <apache.commons-lang3.version>3.3.2</apache.commons-lang3.version>
-        <atlassian-event.version>2.3.2</atlassian-event.version>
-        <atlassian.annotations.version>0.8.1</atlassian.annotations.version>
-        <atlassian.embedded-crowd-api.version>2.8.2-m4</atlassian.embedded-crowd-api.version>
-        <atlassian.sal-api.version>2.6.0</atlassian.sal-api.version>
-        <atlassian.templaterenderer.version>2.0.0</atlassian.templaterenderer.version>
         <ch.qos.logback.version>1.1.2</ch.qos.logback.version>
         <com.atlassian-util-concurrent.version>2.4.1</com.atlassian-util-concurrent.version>
+        <com.atlassian.annotations.version>0.8.1</com.atlassian.annotations.version>
         <com.atlassian.core.version>5.0.2</com.atlassian.core.version>
+        <com.atlassian.embedded-crowd-api.version>2.8.2-m4</com.atlassian.embedded-crowd-api.version>
         <com.atlassian.event.version>2.3.2</com.atlassian.event.version>
         <com.atlassian.fugue.version>1.1</com.atlassian.fugue.version>
+        <com.atlassian.sal-api.version>2.6.0</com.atlassian.sal-api.version>
+        <com.atlassian.templaterenderer.version>2.0.0</com.atlassian.templaterenderer.version>
         <com.google.guava.version>10.0.1</com.google.guava.version>
         <com.google.jsr305.version>2.0.3</com.google.jsr305.version>
         <commons-beanutils.version>1.6.1</commons-beanutils.version>
@@ -61,7 +60,6 @@
         <net.java.dev.javacc.version>4.1</net.java.dev.javacc.version>
         <opensymphony.propertyset.version>1.5</opensymphony.propertyset.version>
         <org.mockito.version>1.9.5</org.mockito.version>
-        <org.slf4j-api.version>1.7.9</org.slf4j-api.version>
         <org.slf4j.version>1.7.9</org.slf4j.version>
         <oro.version>2.0.8</oro.version>
         <plugin.testrunner.version>1.1.1</plugin.testrunner.version>
@@ -76,7 +74,7 @@
             <dependency>
                 <groupId>com.atlassian.annotations</groupId>
                 <artifactId>atlassian-annotations</artifactId>
-                <version>${atlassian.annotations.version}</version>
+                <version>${com.atlassian.annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.core</groupId>
@@ -176,13 +174,13 @@
             <dependency>
                 <groupId>com.atlassian.crowd</groupId>
                 <artifactId>embedded-crowd-api</artifactId>
-                <version>${atlassian.embedded-crowd-api.version}</version>
+                <version>${com.atlassian.embedded-crowd-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.event</groupId>
                 <artifactId>atlassian-event</artifactId>
-                <version>${atlassian-event.version}</version>
+                <version>${com.atlassian.event.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -194,13 +192,13 @@
             <dependency>
                 <groupId>com.atlassian.sal</groupId>
                 <artifactId>sal-api</artifactId>
-                <version>${atlassian.sal-api.version}</version>
+                <version>${com.atlassian.sal-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.templaterenderer</groupId>
                 <artifactId>atlassian-template-renderer-api</artifactId>
-                <version>${atlassian.templaterenderer.version}</version>
+                <version>${com.atlassian.templaterenderer.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -224,7 +222,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${org.slf4j-api.version}</version>
+                <version>${org.slf4j.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
