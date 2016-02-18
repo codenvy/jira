@@ -52,6 +52,7 @@
         <javax.javaxb-api.version>2.1</javax.javaxb-api.version>
         <javax.jsr311-api.version>1.1.1</javax.jsr311-api.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
+        <jfree.jcommon.version>1.0.16</jfree.jcommon.version>
         <jira.version>6.4.6</jira.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.16</log4j.version>
@@ -135,6 +136,11 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${javax.servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jfree</groupId>
+                <artifactId>jcommon</artifactId>
+                <version>${jfree.jcommon.version}</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
