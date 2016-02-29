@@ -234,8 +234,8 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
                     return;
                 }
 
-                String developFieldValue = "<a id=\"codenvy_develop_field\" href=\"" + developFactoryUrl + "\">Develop in Codenvy</a>";
-                String reviewFieldValue = "<a id=\"codenvy_review_field\" href=\"" + reviewFactoryUrl + "\">Review in Codenvy</a>";
+                String developFieldValue = "<a id=\"codenvy_develop_field\" href=\"" + developFactoryUrl + "\">Developer Workspace</a>";
+                String reviewFieldValue = "<a id=\"codenvy_review_field\" href=\"" + reviewFactoryUrl + "\">Reviewer Workspace</a>";
 
                 final ApplicationUser appUser = ApplicationUsers.from(eventUser);
                 updateIssue(appUser, issueKey, developFieldId, developFieldValue, reviewFieldId, reviewFieldValue);
