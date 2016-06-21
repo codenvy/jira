@@ -208,6 +208,7 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
                 final JSONObject project = developFactory.getJSONObject("workspace").getJSONArray("projects").getJSONObject(0);
                 final JSONObject parameters = project.getJSONObject("source").getJSONObject("parameters");
                 parameters.put("branch", issueKey);
+                parameters.put("startPoint", "origin/master");
 
                 // Generate Develop factory
                 final JSONObject generatedDevelopFactory =
