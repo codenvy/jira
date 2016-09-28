@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2012-2016 Codenvy
+    Copyright (c) 2012-2016 Codenvy, S.A.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -16,26 +16,22 @@
     <parent>
         <artifactId>maven-parent-pom</artifactId>
         <groupId>org.eclipse.che.parent</groupId>
-        <version>4.0.0-RC4</version>
+        <version>5.0.0-M3</version>
     </parent>
     <groupId>com.codenvy.plugin</groupId>
-    <artifactId>plugin-jira-parent</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>Codenvy JIRA Plugin :: Parent</name>
-    <organization>
-        <name>Codenvy</name>
-        <url>http://www.codenvy.com</url>
-    </organization>
-    <modules>
-        <module>codenvy-jira-addon</module>
-    </modules>
+    <artifactId>codenvy-jira-plugin</artifactId>
+    <version>1.0.4-SNAPSHOT</version>
+    <packaging>atlassian-plugin</packaging>
+    <name>Codenvy JIRA Plugin</name>
     <properties>
         <amps.version>6.1.0</amps.version>
         <apache.commons-lang3.version>3.3.2</apache.commons-lang3.version>
         <ch.qos.logback.version>1.1.2</ch.qos.logback.version>
+        <com.atlassian-event.version>2.3.2</com.atlassian-event.version>
+        <com.atlassian-plugins-webfragment.version>4.1.0</com.atlassian-plugins-webfragment.version>
         <com.atlassian-util-concurrent.version>2.4.1</com.atlassian-util-concurrent.version>
         <com.atlassian.annotations.version>0.8.1</com.atlassian.annotations.version>
+        <com.atlassian.cache.version>2.11.1</com.atlassian.cache.version>
         <com.atlassian.core.version>5.0.2</com.atlassian.core.version>
         <com.atlassian.embedded-crowd-api.version>2.8.2-m4</com.atlassian.embedded-crowd-api.version>
         <com.atlassian.event.version>2.3.2</com.atlassian.event.version>
@@ -47,13 +43,16 @@
         <commons-beanutils.version>1.6.1</commons-beanutils.version>
         <commons-codec.version>1.3</commons-codec.version>
         <commons-collections.version>3.1</commons-collections.version>
+        <commons-io.version>2.1</commons-io.version>
         <commons-lang.version>2.4</commons-lang.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
         <google.gson.version>2.2.2-atlassian-1</google.gson.version>
         <javax.javaxb-api.version>2.1</javax.javaxb-api.version>
         <javax.jsr311-api.version>1.1.1</javax.jsr311-api.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <jfree.jcommon.version>1.0.16</jfree.jcommon.version>
-        <jira.version>6.4.6</jira.version>
+        <jira.version>7.1.9</jira.version>
+        <joda-time.version>2.8.2</joda-time.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.16</log4j.version>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -61,6 +60,7 @@
         <net.java.dev.javacc.version>4.1</net.java.dev.javacc.version>
         <opensymphony.propertyset.version>1.5</opensymphony.propertyset.version>
         <org.mockito.version>1.9.5</org.mockito.version>
+        <org.slf4j-api.version>1.7.9</org.slf4j-api.version>
         <org.slf4j.version>1.7.9</org.slf4j.version>
         <oro.version>2.0.8</oro.version>
         <plugin.testrunner.version>1.1.1</plugin.testrunner.version>
@@ -78,19 +78,29 @@
                 <version>${com.atlassian.annotations.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.atlassian.cache</groupId>
+                <artifactId>atlassian-cache-api</artifactId>
+                <version>${com.atlassian.cache.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.atlassian.core</groupId>
                 <artifactId>atlassian-core</artifactId>
                 <version>${com.atlassian.core.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.atlassian.event</groupId>
-                <artifactId>atlassian-event</artifactId>
-                <version>${com.atlassian.event.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.atlassian.fugue</groupId>
                 <artifactId>fugue</artifactId>
                 <version>${com.atlassian.fugue.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.atlassian.plugins</groupId>
+                <artifactId>atlassian-plugins-webfragment</artifactId>
+                <version>${com.atlassian-plugins-webfragment.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.atlassian.plugins</groupId>
+                <artifactId>atlassian-plugins-webfragment-api</artifactId>
+                <version>${com.atlassian-plugins-webfragment.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.util.concurrent</groupId>
@@ -108,11 +118,6 @@
                 <version>${google.gson.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${com.google.guava.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
@@ -128,9 +133,19 @@
                 <version>${commons-collections.version}</version>
             </dependency>
             <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -141,6 +156,11 @@
                 <groupId>jfree</groupId>
                 <artifactId>jcommon</artifactId>
                 <version>${jfree.jcommon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
@@ -163,11 +183,6 @@
                 <version>${apache.commons-lang3.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${org.slf4j.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>oro</groupId>
                 <artifactId>oro</artifactId>
                 <version>${oro.version}</version>
@@ -186,7 +201,7 @@
             <dependency>
                 <groupId>com.atlassian.event</groupId>
                 <artifactId>atlassian-event</artifactId>
-                <version>${com.atlassian.event.version}</version>
+                <version>${com.atlassian-event.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -228,7 +243,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${org.slf4j.version}</version>
+                <version>${org.slf4j-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -276,6 +291,139 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.javacc</groupId>
+            <artifactId>javacc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>us.monoid.web</groupId>
+            <artifactId>resty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>embedded-crowd-api</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.event</groupId>
+            <artifactId>atlassian-event</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-api</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.sal</groupId>
+            <artifactId>sal-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.templaterenderer</groupId>
+            <artifactId>atlassian-template-renderer-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>stax-api</artifactId>
+                    <groupId>javax.xml.stream</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- WIRED TEST RUNNER DEPENDENCIES -->
+        <dependency>
+            <groupId>com.atlassian.plugins</groupId>
+            <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <repositories>
         <repository>
             <id>atlassian-public</id>
@@ -318,7 +466,7 @@
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
-                    <log4jProperties>src/aps/log4j.properties</log4jProperties>
+                    <log4jProperties>../src/aps/log4j.properties</log4jProperties>
                     <skipITs>true</skipITs>
                 </configuration>
             </plugin>
