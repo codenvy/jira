@@ -1,0 +1,82 @@
+<!--
+
+    Copyright (c) 2012-2016 Codenvy, S.A.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+    Contributors:
+      Codenvy, S.A. - initial API and implementation
+
+-->
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/codenvyIcon.jpg</param>
+        <param name="plugin-logo">images/codenvyLogo.jpg</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="codenvy-jira-plugin"/>
+    
+    <!-- publish our component -->
+    <component key="codenvyPluginComponent" class="com.codenvy.plugin.CodenvyPluginComponentImpl" public="true">
+        <interface>com.codenvy.plugin.CodenvyPluginComponent</interface>
+    </component>
+    
+    <!-- import from the product container -->
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
+
+    <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher"/>
+    <component key="eventListener" class="com.codenvy.plugin.IssueCreatedListener">
+        <description>Class that generates a Codenvy factory when a new factory enabled issue is created.</description>
+    </component>
+
+    <!-- Add-on admin page components -->
+    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
+    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+    <component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
+    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+    <component-import key="transactionTemplate" interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
+    <component-import key="fieldManager" interface="com.atlassian.jira.issue.fields.FieldManager" />
+
+    <!-- Add-on admin resources -->
+    <servlet key="admin-servlet" class="com.codenvy.plugin.administrate.AdminServlet">
+        <url-pattern>/codenvy/admin</url-pattern>
+    </servlet>
+    <rest key="rest" path="/codenvy-admin" version="1.0">
+        <description>Provides REST resources for the Codenvy plugin admin UI.</description>
+    </rest>
+    <web-resource name="Admin Web Resources" key="resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="admin.js" location="/js/admin.js"/>
+    </web-resource>
+
+    <!-- Add-on web item to show in Global Settings menu -->
+    <web-item key="jira-menu-item" name="Codenvy Admin" section="system.admin/globalsettings" weight="10" application="jira">
+        <description>Link to codenvy admin page.</description>
+        <label key="Codenvy Administration" />
+        <link linkId="codenvy-admin-link">/plugins/servlet/codenvy/admin</link>
+    </web-item>
+
+    <!-- Develop custom field type -->
+    <customfield-type key="developfield" name="Codenvy Develop Field"
+                      class="com.codenvy.plugin.customfield.DevelopCustomField">
+        <description>Open your Codenvy workspace in one click.</description>
+        <resource type="velocity" name="view" location="templates/view-codenvy-field.vm"/>
+        <resource type="velocity" name="edit" location="templates/edit-codenvy-field.vm"/>
+        <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
+    </customfield-type>
+
+    <!-- Review custom field type -->
+    <customfield-type key="reviewfield" name="Codenvy Review Field"
+                      class="com.codenvy.plugin.customfield.ReviewCustomField">
+        <description>Open a per click Codenvy workspace in one click.</description>
+        <resource type="velocity" name="view" location="templates/view-codenvy-field.vm"/>
+        <resource type="velocity" name="edit" location="templates/edit-codenvy-field.vm"/>
+        <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
+    </customfield-type>
+</atlassian-plugin>
