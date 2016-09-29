@@ -20,13 +20,13 @@
     </parent>
     <groupId>com.codenvy.plugin</groupId>
     <artifactId>codenvy-jira-plugin</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <packaging>atlassian-plugin</packaging>
     <name>Codenvy JIRA Plugin</name>
     <scm>
         <connection>scm:git:git@github.com:codenvy/codenvy-jira-addon.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/codenvy-jira-addon.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>1.0.4</tag>
         <url>https://github.com/codenvy/codenvy-jira-addon</url>
     </scm>
     <properties>
