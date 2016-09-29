@@ -23,6 +23,12 @@
     <version>1.0.4-SNAPSHOT</version>
     <packaging>atlassian-plugin</packaging>
     <name>Codenvy JIRA Plugin</name>
+    <scm>
+        <connection>scm:git:git@github.com:codenvy/codenvy-jira-addon.git</connection>
+        <developerConnection>scm:git:git@github.com:codenvy/codenvy-jira-addon.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/codenvy/codenvy-jira-addon</url>
+    </scm>
     <properties>
         <amps.version>6.1.0</amps.version>
         <apache.commons-lang3.version>3.3.2</apache.commons-lang3.version>
