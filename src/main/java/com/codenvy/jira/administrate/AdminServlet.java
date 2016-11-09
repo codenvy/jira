@@ -8,7 +8,7 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package com.codenvy.plugin.administrate;
+package com.codenvy.jira.administrate;
 
 import java.io.IOException;
 

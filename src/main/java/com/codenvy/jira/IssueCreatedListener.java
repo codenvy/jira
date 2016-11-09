@@ -8,7 +8,7 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package com.codenvy.plugin;
+package com.codenvy.jira;
 
 import us.monoid.json.JSONArray;
 import us.monoid.json.JSONException;
@@ -49,8 +49,8 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(IssueCreatedListener.class);
 
-    private static final String CODENVY_DEVELOP_FIELD_TYPE_KEY = "com.codenvy.plugin.codenvy-jira-plugin:developfield";
-    private static final String CODENVY_REVIEW_FIELD_TYPE_KEY  = "com.codenvy.plugin.codenvy-jira-plugin:reviewfield";
+    private static final String CODENVY_DEVELOP_FIELD_TYPE_KEY = "com.codenvy.jira.codenvy-jira-plugin:developfield";
+    private static final String CODENVY_REVIEW_FIELD_TYPE_KEY  = "com.codenvy.jira.codenvy-jira-plugin:reviewfield";
 
     private final EventPublisher        eventPublisher;
     private final PluginSettingsFactory pluginSettingsFactory;

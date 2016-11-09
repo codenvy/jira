@@ -13,7 +13,7 @@
 <head>
     <title>Codenvy Administration</title>
     <meta name="decorator" content="atl.admin">
-    $webResourceManager.requireResource("com.codenvy.plugin.codenvy-jira-plugin:resources")
+    $webResourceManager.requireResource("com.codenvy.jira.codenvy-jira-plugin:resources")
 </head>
 <body>
 <form id="admin" class="aui">

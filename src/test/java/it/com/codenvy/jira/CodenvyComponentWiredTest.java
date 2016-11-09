@@ -8,14 +8,14 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package it.com.codenvy.plugin;
+package it.com.codenvy.jira;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.atlassian.plugins.osgi.test.AtlassianPluginsTestRunner;
 import com.atlassian.sal.api.ApplicationProperties;
-import com.codenvy.plugin.CodenvyPluginComponent;
+import com.codenvy.jira.CodenvyPluginComponent;
 
 import static org.junit.Assert.assertEquals;
 

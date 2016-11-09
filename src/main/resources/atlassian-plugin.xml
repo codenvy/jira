@@ -23,15 +23,15 @@
     <resource type="i18n" name="i18n" location="codenvy-jira-plugin"/>
     
     <!-- publish our component -->
-    <component key="codenvyPluginComponent" class="com.codenvy.plugin.CodenvyPluginComponentImpl" public="true">
-        <interface>com.codenvy.plugin.CodenvyPluginComponent</interface>
+    <component key="codenvyPluginComponent" class="com.codenvy.jira.CodenvyPluginComponentImpl" public="true">
+        <interface>com.codenvy.jira.CodenvyPluginComponent</interface>
     </component>
     
     <!-- import from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
 
     <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher"/>
-    <component key="eventListener" class="com.codenvy.plugin.IssueCreatedListener">
+    <component key="eventListener" class="com.codenvy.jira.IssueCreatedListener">
         <description>Class that generates a Codenvy factory when a new factory enabled issue is created.</description>
     </component>
 
@@ -44,7 +44,7 @@
     <component-import key="fieldManager" interface="com.atlassian.jira.issue.fields.FieldManager" />
 
     <!-- Add-on admin resources -->
-    <servlet key="admin-servlet" class="com.codenvy.plugin.administrate.AdminServlet">
+    <servlet key="admin-servlet" class="com.codenvy.jira.administrate.AdminServlet">
         <url-pattern>/codenvy/admin</url-pattern>
     </servlet>
     <rest key="rest" path="/codenvy-admin" version="1.0">
@@ -64,7 +64,7 @@
 
     <!-- Develop custom field type -->
     <customfield-type key="developfield" name="Codenvy Develop Field"
-                      class="com.codenvy.plugin.customfield.DevelopCustomField">
+                      class="com.codenvy.jira.customfield.DevelopCustomField">
         <description>Open your Codenvy workspace in one click.</description>
         <resource type="velocity" name="view" location="templates/view-codenvy-field.vm"/>
         <resource type="velocity" name="edit" location="templates/edit-codenvy-field.vm"/>
@@ -73,7 +73,7 @@
 
     <!-- Review custom field type -->
     <customfield-type key="reviewfield" name="Codenvy Review Field"
-                      class="com.codenvy.plugin.customfield.ReviewCustomField">
+                      class="com.codenvy.jira.customfield.ReviewCustomField">
         <description>Open a per click Codenvy workspace in one click.</description>
         <resource type="velocity" name="view" location="templates/view-codenvy-field.vm"/>
         <resource type="velocity" name="edit" location="templates/edit-codenvy-field.vm"/>

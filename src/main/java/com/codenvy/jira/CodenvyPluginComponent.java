@@ -8,32 +8,18 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package com.codenvy.plugin;
-
-import com.atlassian.sal.api.ApplicationProperties;
+package com.codenvy.jira;
 
 /**
- * Implementation of {@link com.codenvy.plugin.CodenvyPluginComponent}
+ * Plugin component module
  *
  * @author Stephane Tournie
  */
-public class CodenvyPluginComponentImpl implements CodenvyPluginComponent {
-    private final ApplicationProperties applicationProperties;
-
-    public CodenvyPluginComponentImpl(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
-    }
-
+public interface CodenvyPluginComponent {
     /**
      * Get the name of the component
      *
      * @return the name of the component
      */
-    public String getName() {
-        if (null != applicationProperties) {
-            return "codenvyPluginComponent:" + applicationProperties.getDisplayName();
-        }
-
-        return "codenvyPluginComponent";
-    }
+    String getName();
 }

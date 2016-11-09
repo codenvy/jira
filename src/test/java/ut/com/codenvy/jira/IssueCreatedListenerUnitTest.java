@@ -8,12 +8,11 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package ut.com.codenvy.plugin;
+package ut.com.codenvy.jira;
 
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 
-import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.event.issue.IssueEvent;
@@ -28,7 +27,7 @@ import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
-import com.codenvy.plugin.IssueCreatedListener;
+import com.codenvy.jira.IssueCreatedListener;
 
 import org.junit.Before;
 import org.junit.Test;

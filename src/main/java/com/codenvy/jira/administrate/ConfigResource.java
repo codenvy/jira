@@ -8,7 +8,7 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package com.codenvy.plugin.administrate;
+package com.codenvy.jira.administrate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
