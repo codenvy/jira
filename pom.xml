@@ -18,7 +18,7 @@
         <groupId>org.eclipse.che.parent</groupId>
         <version>5.0.0-M3</version>
     </parent>
-    <groupId>com.codenvy.plugin</groupId>
+    <groupId>com.codenvy.jira</groupId>
     <artifactId>codenvy-jira-plugin</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>atlassian-plugin</packaging>

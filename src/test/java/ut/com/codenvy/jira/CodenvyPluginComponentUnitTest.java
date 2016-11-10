@@ -8,12 +8,12 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package ut.com.codenvy.plugin;
+package ut.com.codenvy.jira;
 
 import org.junit.Test;
 
-import com.codenvy.plugin.CodenvyPluginComponent;
-import com.codenvy.plugin.CodenvyPluginComponentImpl;
+import com.codenvy.jira.CodenvyPluginComponent;
+import com.codenvy.jira.CodenvyPluginComponentImpl;
 
 import static org.junit.Assert.assertEquals;
 
