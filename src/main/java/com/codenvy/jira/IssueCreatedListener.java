@@ -109,19 +109,19 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
     public void onIssueEvent(IssueEvent issueEvent) {
         final Long eventTypeId = issueEvent.getEventTypeId();
         final Issue issue = issueEvent.getIssue();
+        // Get plugin settings
+        PluginSettings settings = pluginSettingsFactory.createGlobalSettings();
+        final String codenvyUrl = (String)settings.get("codenvy.admin.instanceurl");
+        final String codenvyUsername = (String)settings.get("codenvy.admin.username");
+        final String codenvyPassword = (String)settings.get("codenvy.admin.password");
+
+        if (isNullOrEmpty(codenvyUrl) || isNullOrEmpty(codenvyUsername) || isNullOrEmpty(codenvyPassword)) {
+            LOG.warn("At least one of codenvy URL (\'" + codenvyUrl + "\'), username (\'" + codenvyUsername + "\') " +
+                     "or password (\'" + codenvyPassword + "\') is not set or empty.");
+            return;
+        }
         // if it's an event we're interested in, log it
         if (eventTypeId.equals(EventType.ISSUE_CREATED_ID)) {
-            // Get plugin settings
-            PluginSettings settings = pluginSettingsFactory.createGlobalSettings();
-            final String codenvyUrl = (String)settings.get("codenvy.admin.instanceurl");
-            final String codenvyUsername = (String)settings.get("codenvy.admin.username");
-            final String codenvyPassword = (String)settings.get("codenvy.admin.password");
-
-            if (isNullOrEmpty(codenvyUrl) || isNullOrEmpty(codenvyUsername) || isNullOrEmpty(codenvyPassword)) {
-                LOG.warn("At least one of codenvy URL (\'" + codenvyUrl + "\'), username (\'" + codenvyUsername + "\') " +
-                         "or password (\'" + codenvyPassword + "\') is not set or empty.");
-                return;
-            }
 
             try {
 
@@ -170,16 +170,9 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
                     return;
                 }
 
-                // Get Codenvy user id
-                final JSONObject user = resty.json(codenvyUrl + "/api/user").object();
-                if (user == null) {
-                    LOG.warn("No Codenvy user found (" + codenvyUsername + ").");
-                    return;
-                }
-
                 // Get parent factory for project
                 final String tokenValue = token.getString("value");
-                final String userId = user.getString("id");
+                final String userId = getUserId(codenvyUrl, codenvyUsername);
                 final String projectKeyLower = projectKey.toLowerCase(Locale.getDefault());
                 final JSONArray factories = resty.json(
                         codenvyUrl + "/api/factory/find?name=" + projectKeyLower + "&creator.userId=" + userId + "&token=" +
@@ -241,7 +234,86 @@ public class IssueCreatedListener implements InitializingBean, DisposableBean {
             } catch (JSONException | IOException | FieldException e) {
                 LOG.error(e.getMessage());
             }
+        } else if (eventTypeId.equals(EventType.ISSUE_CLOSED_ID) ||
+                   eventTypeId.equals(EventType.ISSUE_DELETED_ID) ||
+                   eventTypeId.equals(EventType.ISSUE_RESOLVED_ID)) {
+
+            final Set<CustomField> customFields;
+            try {
+                customFields = fieldManager.getAvailableCustomFields(issueEvent.getUser(), issue);
+                for (CustomField cf : customFields) {
+                    String customFieldTypeKey = cf.getCustomFieldType().getKey();
+                    if (CODENVY_DEVELOP_FIELD_TYPE_KEY.equals(customFieldTypeKey)) {
+                        deleteFactory(issue.getKey().toLowerCase() + "-develop-factory", codenvyUrl, codenvyUsername, codenvyPassword);
+                    } else if (CODENVY_REVIEW_FIELD_TYPE_KEY.equals(customFieldTypeKey)) {
+                        deleteFactory(issue.getKey().toLowerCase() + "-review-factory", codenvyUrl, codenvyUsername, codenvyPassword);
+                    }
+                }
+            } catch (FieldException e) {
+                LOG.error(e.getMessage());
+            }
         }
+    }
+
+    private void deleteFactory(String factoryName, String codenvyUrl, String codenvyUsername, String codenvyPassword) {
+        final Resty resty = new Resty();
+        JSONArray factories;
+        String token = getToken(codenvyUsername, codenvyPassword, codenvyUrl);
+        String userId = getUserId(codenvyUrl, codenvyUsername);
+        try {
+            factories = resty.json(codenvyUrl +
+                                   "/api/factory/find?name=" + factoryName +
+                                   "&creator.userId=" + userId +
+                                   "&token=" + token).array();
+
+            if (factories.length() == 0) {
+                LOG.warn("No factory found with name: " + factoryName + " and userId (owner): " + userId);
+                return;
+            }
+
+            JSONObject factory = factories.getJSONObject(0);
+            String factoryId = factory.getString("id");
+            resty.json(codenvyUrl + "/api/factory/" + factoryId + "&token=" + token, Resty.delete());
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getToken(String username, String password, String url) {
+
+        JSONObject token;
+        final Resty resty = new Resty();
+
+        // Authenticate on Codenvy as JIRA admin
+        JSONObject credentials;
+        try {
+            credentials = new JSONObject().put("username", username).put("password", password);
+            token = resty.json(url + "/api/auth/login", content(credentials)).object();
+            if (token == null) {
+                LOG.warn("No Codenvy Token obtained (" + username + ").");
+                return "";
+            }
+            return token.getString("value");
+        } catch (JSONException | IOException e) {
+            LOG.error(e.getMessage());
+            return "";
+        }
+    }
+
+    private String getUserId(String codenvyUrl, String codenvyUsername) {
+        // Get Codenvy user id
+        JSONObject user = null;
+        try {
+            user = new Resty().json(codenvyUrl + "/api/user").object();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        if (user == null) {
+            LOG.warn("No Codenvy user found (" + codenvyUsername + ").");
+            return "";
+        }
+
+        return "";
     }
 
     /**
